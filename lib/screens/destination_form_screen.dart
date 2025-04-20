@@ -19,6 +19,21 @@ class _DestinationFormScreenState extends State<DestinationFormScreen> {
   final _descriptionController = TextEditingController();
   final _searchController = TextEditingController();
   final GeoService _geoService = GeoService();
+  
+  // Lista de categorias disponíveis
+  final List<String> _categories = [
+    'Praia', 
+    'Montanha', 
+    'Cidade', 
+    'Museu', 
+    'Parque', 
+    'Restaurante', 
+    'Hotel', 
+    'Monumento',
+    'Outros'
+  ];
+  
+  String _selectedCategory = 'Outros';
 
   // Iniciar com visão mundial (zoom menor)
   double _latitude = 0.0; // Centro do mapa (equador)
@@ -279,6 +294,7 @@ class _DestinationFormScreenState extends State<DestinationFormScreen> {
         description: _descriptionController.text,
         latitude: _latitude,
         longitude: _longitude,
+        category: _selectedCategory, // Adicionada a categoria
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -345,6 +361,28 @@ class _DestinationFormScreenState extends State<DestinationFormScreen> {
                             return 'Por favor, digite uma descrição';
                           }
                           return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      // Dropdown para selecionar categoria
+                      DropdownButtonFormField<String>(
+                        decoration: const InputDecoration(
+                          labelText: 'Categoria',
+                          border: OutlineInputBorder(),
+                        ),
+                        value: _selectedCategory,
+                        items: _categories.map((String category) {
+                          return DropdownMenuItem<String>(
+                            value: category,
+                            child: Text(category),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          if (newValue != null) {
+                            setState(() {
+                              _selectedCategory = newValue;
+                            });
+                          }
                         },
                       ),
                       const SizedBox(height: 16),

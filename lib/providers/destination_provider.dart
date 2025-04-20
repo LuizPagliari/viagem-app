@@ -11,6 +11,20 @@ class DestinationProvider extends ChangeNotifier {
   List<Destination> get destinations => _destinations;
   bool get isLoading => _isLoading;
 
+  // Getter para obter destinos por categoria
+  Map<String, List<Destination>> get destinationsByCategory {
+    final Map<String, List<Destination>> result = {};
+    
+    for (final destination in _destinations) {
+      if (!result.containsKey(destination.category)) {
+        result[destination.category] = [];
+      }
+      result[destination.category]!.add(destination);
+    }
+    
+    return result;
+  }
+
   DestinationProvider() {
     loadDestinations();
   }
@@ -32,6 +46,7 @@ class DestinationProvider extends ChangeNotifier {
     required String description,
     required double latitude,
     required double longitude,
+    String category = 'Outros', // Parâmetro de categoria adicionado
   }) async {
     final destination = Destination(
       id: const Uuid().v4(),
@@ -39,6 +54,7 @@ class DestinationProvider extends ChangeNotifier {
       description: description,
       latitude: latitude,
       longitude: longitude,
+      category: category, // Categoria passada para o modelo
     );
 
     await _destinationService.addDestination(destination);
@@ -61,5 +77,13 @@ class DestinationProvider extends ChangeNotifier {
       _destinations[index].isVisited = !_destinations[index].isVisited;
       notifyListeners();
     }
+  }
+  
+  // Filtra destinos por categoria
+  List<Destination> getDestinationsByCategory(String category) {
+    if (category == 'Todos') {
+      return _destinations;
+    }
+    return _destinations.where((dest) => dest.category == category).toList();
   }
 }

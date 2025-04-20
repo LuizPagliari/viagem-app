@@ -4,6 +4,7 @@ class Destination {
   final String description;
   final double latitude;
   final double longitude;
+  final String category; // Nova propriedade para categoria
   bool isVisited;
 
   Destination({
@@ -12,6 +13,7 @@ class Destination {
     required this.description,
     required this.latitude,
     required this.longitude,
+    this.category = 'Outros', // Categoria padrão
     this.isVisited = false,
   });
 
@@ -24,6 +26,7 @@ class Destination {
       'latitude': latitude,
       'longitude': longitude,
       'isVisited': isVisited,
+      'category': category, // Adicionado ao JSON
     };
   }
 
@@ -36,6 +39,7 @@ class Destination {
       latitude: json['latitude'],
       longitude: json['longitude'],
       isVisited: json['isVisited'],
+      category: json['category'] ?? 'Outros', // Obtém a categoria ou usa padrão
     );
   }
 }

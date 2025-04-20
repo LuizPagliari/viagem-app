@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.travelplanner.viagem_app"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973" // Atualizado para a versão requerida pelos plugins
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
